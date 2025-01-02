@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="shift_types">
+        <item>早班</item>
+        <item>中班</item>
+        <item>晚班</item>
+        <item>夜班</item>
+    </string-array>
+</resources> 

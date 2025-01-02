@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="基本设置"
+        android:layout="@layout/preference_category_custom">
+
+        <Preference
+            android:key="rotation_settings"
+            android:title="轮班设置"
+            android:summary="设置轮班模式和规则"
+            android:layout="@layout/preference_custom"/>
+
+        <Preference
+            android:key="alarm_settings"
+            android:title="闹钟设置"
+            android:summary="设置提醒时间和方式"
+            android:layout="@layout/preference_custom"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="其他"
+        android:layout="@layout/preference_category_custom">
+
+        <SwitchPreferenceCompat
+            android:key="notification_enabled"
+            android:title="开启通知"
+            android:summary="接收班次提醒通知"
+            android:defaultValue="true"
+            android:layout="@layout/preference_custom"/>
+
+        <SwitchPreferenceCompat
+            android:key="vibration_enabled"
+            android:title="震动提醒"
+            android:summary="开启震动提醒"
+            android:defaultValue="true"
+            android:layout="@layout/preference_custom"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen> 
