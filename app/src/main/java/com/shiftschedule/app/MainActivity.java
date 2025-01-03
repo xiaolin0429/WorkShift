@@ -3,62 +3,47 @@ package com.shiftschedule.app;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.shiftschedule.app.fragment.HomeFragment;
-import com.shiftschedule.app.fragment.CalendarFragment;
-import com.shiftschedule.app.fragment.SettingsFragment;
-import com.shiftschedule.app.util.LogUtil;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 设置Toolbar
+        // 设置工具栏
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // 设置底部导航
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
-            if (item.getItemId() == R.id.navigation_home) {
-                selectedFragment = new HomeFragment();
-                toolbar.setTitle(R.string.app_name);
-            } else if (item.getItemId() == R.id.navigation_calendar) {
-                selectedFragment = new CalendarFragment();
-                toolbar.setTitle("日历");
-            } else if (item.getItemId() == R.id.navigation_settings) {
-                selectedFragment = new SettingsFragment();
-                toolbar.setTitle("设置");
-            }
+        
+        // 获取 NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
 
-            if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment, selectedFragment)
-                    .commit();
-                return true;
-            }
-            return false;
-        });
+            // 配置顶部工具栏和底部导航栏
+            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home,
+                R.id.navigation_calendar,
+                R.id.navigation_settings
+            ).build();
 
-        // 默认选中首页
-        if (savedInstanceState == null) {
-            bottomNav.setSelectedItemId(R.id.navigation_home);
+            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+            NavigationUI.setupWithNavController(bottomNav, navController);
         }
     }
 
     @Override
-    public void onBackPressed() {
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        if (bottomNav.getSelectedItemId() != R.id.navigation_home) {
-            bottomNav.setSelectedItemId(R.id.navigation_home);
-        } else {
-            super.onBackPressed();
-        }
+    public boolean onSupportNavigateUp() {
+        return navController != null && navController.navigateUp() || super.onSupportNavigateUp();
     }
 } 

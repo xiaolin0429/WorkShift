@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 基础颜色 -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,21 +8,43 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="calendar_week_text">#757575</color>
-    <color name="calendar_day_text">#212121</color>
-    <color name="calendar_lunar_text">#9E9E9E</color>
-    <color name="calendar_holiday_text">#F44336</color>
-    <color name="calendar_today_background">#E3F2FD</color>
-    <color name="calendar_selected_background">#BBDEFB</color>
-    <color name="calendar_other_month_text">#CCCCCC</color>
-    <color name="notification_color">#FF4444</color>
+
+    <!-- 应用主题颜色 -->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#BB86FC</color>
+
+    <!-- 底部导航栏颜色 -->
+    <color name="nav_item_selected">#6200EE</color>
+    <color name="nav_item_unselected">#757575</color>
+
+    <!-- 日历颜色 -->
+    <color name="calendar_text_weekday">#666666</color>
+    <color name="calendar_text_day">#333333</color>
+    <color name="calendar_text_day_other_month">#BBBBBB</color>
+    <color name="calendar_text_lunar">#999999</color>
+    <color name="calendar_text_shift">#FFFFFF</color>
+    <color name="calendar_today_bg">#E3F2FD</color>
+    <color name="calendar_today_border">#2196F3</color>
+    
+    <!-- 班次颜色 -->
     <color name="shift_morning">#4CAF50</color>
-    <color name="shift_afternoon">#2196F3</color>
-    <color name="shift_night">#9C27B0</color>
-    <color name="group_1">#FF1744</color>
-    <color name="group_2">#2979FF</color>
-    <color name="group_3">#00E676</color>
-    <color name="group_4">#FFD600</color>
-    <color name="group_5">#FF6D00</color>
-    <color name="group_6">#651FFF</color>
+    <color name="shift_afternoon">#FF9800</color>
+    <color name="shift_night">#3F51B5</color>
+    <color name="shift_rest">#9E9E9E</color>
+
+    <!-- 通知颜色 -->
+    <color name="notification_color">#4CAF50</color>
+
+    <!-- 分组颜色 -->
+    <color name="group_1">#E57373</color>  <!-- 红色 -->
+    <color name="group_2">#81C784</color>  <!-- 绿色 -->
+    <color name="group_3">#64B5F6</color>  <!-- 蓝色 -->
+    <color name="group_4">#FFB74D</color>  <!-- 橙色 -->
+    <color name="group_5">#BA68C8</color>  <!-- 紫色 -->
+    <color name="group_6">#4DB6AC</color>  <!-- 青色 -->
+
+    <!-- 错误提示颜色 -->
+    <color name="error_background">#FFEBEE</color>
+    <color name="error_text">#D32F2F</color>
 </resources>

@@ -2,23 +2,62 @@ package com.shiftschedule.app.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+import androidx.annotation.NonNull;
 
 @Entity(tableName = "rotation_patterns")
 public class RotationPattern {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String name;
-    private int groupCount;
-    private int cycleDays;
-    private int durationDays;
-    private boolean isActive;
 
-    public RotationPattern(String name, int groupCount, int cycleDays, int durationDays) {
+    @ColumnInfo(name = "name")
+    @NonNull
+    private String name = "";
+
+    @ColumnInfo(name = "pattern")
+    @NonNull
+    private String pattern = "";
+
+    @ColumnInfo(name = "is_active")
+    private boolean isActive = false;
+
+    @ColumnInfo(name = "days_count")
+    private int daysCount = 0;
+
+    @ColumnInfo(name = "group_count")
+    private int groupCount = 0;
+
+    @ColumnInfo(name = "cycle_days")
+    private int cycleDays = 0;
+
+    @ColumnInfo(name = "duration_days")
+    private int durationDays = 0;
+
+    public RotationPattern() {
+    }
+
+    @Ignore
+    public RotationPattern(@NonNull String name, @NonNull String pattern, int daysCount) {
+        this.name = name;
+        this.pattern = pattern;
+        this.daysCount = daysCount;
+    }
+
+    @Ignore
+    public RotationPattern(@NonNull String name, int groupCount, int cycleDays, int durationDays) {
         this.name = name;
         this.groupCount = groupCount;
         this.cycleDays = cycleDays;
         this.durationDays = durationDays;
-        this.isActive = false;
+        this.pattern = generatePattern();
+    }
+
+    private String generatePattern() {
+        // 根据groupCount, cycleDays和durationDays生成pattern
+        StringBuilder pattern = new StringBuilder();
+        // TODO: 实现具体的pattern生成逻辑
+        return pattern.toString();
     }
 
     public int getId() {
@@ -29,12 +68,38 @@ public class RotationPattern {
         this.id = id;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
+    }
+
+    @NonNull
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(@NonNull String pattern) {
+        this.pattern = pattern;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public int getDaysCount() {
+        return daysCount;
+    }
+
+    public void setDaysCount(int daysCount) {
+        this.daysCount = daysCount;
     }
 
     public int getGroupCount() {
@@ -59,39 +124,5 @@ public class RotationPattern {
 
     public void setDurationDays(int durationDays) {
         this.durationDays = durationDays;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RotationPattern pattern = (RotationPattern) o;
-
-        if (id != pattern.id) return false;
-        if (groupCount != pattern.groupCount) return false;
-        if (cycleDays != pattern.cycleDays) return false;
-        if (durationDays != pattern.durationDays) return false;
-        if (isActive != pattern.isActive) return false;
-        return name != null ? name.equals(pattern.name) : pattern.name == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + groupCount;
-        result = 31 * result + cycleDays;
-        result = 31 * result + durationDays;
-        result = 31 * result + (isActive ? 1 : 0);
-        return result;
     }
 } 

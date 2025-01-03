@@ -28,21 +28,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提前提醒时间"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+            android:text="提醒时间"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/seekbar_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/text_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
-
-        <SeekBar
-            android:id="@+id/seek_bar_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
@@ -61,22 +62,22 @@
             android:id="@+id/check_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="开启提醒"/>
+            android:layout_marginTop="16dp"
+            android:text="通知提醒"/>
 
         <CheckBox
             android:id="@+id/check_sound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="声音"/>
+            android:text="声音提醒"/>
 
         <CheckBox
             android:id="@+id/check_vibrate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="震动"/>
+            android:text="震动提醒"/>
 
     </LinearLayout>
 

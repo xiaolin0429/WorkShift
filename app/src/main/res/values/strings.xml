@@ -1,15 +1,28 @@
 <resources>
-    <string name="app_name">排班助手</string>
-    <string name="action_calendar">日历</string>
-    <string name="action_settings">设置</string>
-    <string name="edit_shift">编辑班次</string>
+    <string name="app_name">WorkShift</string>
+
+    <!-- 时间格式 -->
+    <string name="time_format_hour_minute">%1$d小时%2$d分钟</string>
+    <string name="time_format_minute">%1$d分钟</string>
+
+    <!-- 底部导航栏 -->
+
+    <!-- 班次类型 -->
+
+    <!-- 设置 -->
+
+    <!-- 轮班模式 -->
     <string name="rotation_pattern_name">轮班模式名称</string>
     <string name="rotation_group_count">轮班组数</string>
     <string name="rotation_cycle_days">周期天数</string>
     <string name="rotation_duration_days">持续天数</string>
-    <string name="save">保存</string>
     <string name="edit_rotation_pattern">编辑轮班模式</string>
     <string name="new_rotation_pattern">新建轮班模式</string>
     <string name="input_pattern_name">请输入轮班模式名称</string>
+
+    <!-- 通用 -->
+    <string name="save">保存</string>
     <string name="save_success">保存成功</string>
+
+    <string name="edit_shift">编辑班次</string>
 </resources>

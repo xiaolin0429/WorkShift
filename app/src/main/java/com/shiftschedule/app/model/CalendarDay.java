@@ -5,14 +5,26 @@ import java.util.List;
 public class CalendarDay {
     private String date;
     private int dayOfMonth;
-    private String lunarDay;
+    private String dayOfWeek;
     private List<ShiftSchedule> shifts;
+    private boolean isCurrentMonth;
+    private boolean isToday;
 
-    public CalendarDay(String date, int dayOfMonth, String lunarDay, List<ShiftSchedule> shifts) {
+    public CalendarDay(String date, int dayOfMonth, String dayOfWeek, List<ShiftSchedule> shifts) {
         this.date = date;
         this.dayOfMonth = dayOfMonth;
-        this.lunarDay = lunarDay;
+        this.dayOfWeek = dayOfWeek;
         this.shifts = shifts;
+    }
+
+    public CalendarDay(int year, int month, int day, boolean isCurrentMonth, String dayOfWeek, ShiftSchedule shift) {
+        this.date = String.format("%d-%02d-%02d", year, month, day);
+        this.dayOfMonth = day;
+        this.dayOfWeek = dayOfWeek;
+        this.isCurrentMonth = isCurrentMonth;
+        if (shift != null) {
+            this.shifts = List.of(shift);
+        }
     }
 
     public String getDate() {
@@ -31,12 +43,12 @@ public class CalendarDay {
         this.dayOfMonth = dayOfMonth;
     }
 
-    public String getLunarDay() {
-        return lunarDay;
+    public String getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setLunarDay(String lunarDay) {
-        this.lunarDay = lunarDay;
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public List<ShiftSchedule> getShifts() {
@@ -45,5 +57,21 @@ public class CalendarDay {
 
     public void setShifts(List<ShiftSchedule> shifts) {
         this.shifts = shifts;
+    }
+
+    public boolean isCurrentMonth() {
+        return isCurrentMonth;
+    }
+
+    public void setCurrentMonth(boolean currentMonth) {
+        isCurrentMonth = currentMonth;
+    }
+
+    public boolean isToday() {
+        return isToday;
+    }
+
+    public void setToday(boolean today) {
+        isToday = today;
     }
 } 

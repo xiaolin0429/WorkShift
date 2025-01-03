@@ -1,11 +1,11 @@
 package com.shiftschedule.app.repository;
 
+import android.app.Application;
 import android.content.Context;
 import androidx.lifecycle.LiveData;
+import com.shiftschedule.app.dao.ShiftScheduleDao;
 import com.shiftschedule.app.database.AppDatabase;
 import com.shiftschedule.app.model.ShiftSchedule;
-import com.shiftschedule.app.model.RotationPattern;
-import com.shiftschedule.app.dao.ShiftScheduleDao;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,54 +14,16 @@ public class ShiftRepository {
     private final ShiftScheduleDao shiftScheduleDao;
     private final ExecutorService executorService;
 
-    public ShiftRepository(Context context) {
-        AppDatabase database = AppDatabase.getInstance(context);
+    public ShiftRepository(Application application) {
+        AppDatabase database = AppDatabase.getInstance(application);
         shiftScheduleDao = database.shiftScheduleDao();
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    // 轮班模式相关操作
-    public LiveData<List<RotationPattern>> getAllPatterns() {
-        return shiftScheduleDao.getAllPatterns();
-    }
-
-    public LiveData<RotationPattern> getPatternById(int id) {
-        return shiftScheduleDao.getPatternById(id);
-    }
-
-    public void insert(RotationPattern pattern) {
-        executorService.execute(() -> {
-            shiftScheduleDao.insert(pattern);
-        });
-    }
-
-    public void update(RotationPattern pattern) {
-        executorService.execute(() -> {
-            shiftScheduleDao.update(pattern);
-        });
-    }
-
-    public void delete(RotationPattern pattern) {
-        executorService.execute(() -> {
-            shiftScheduleDao.delete(pattern);
-        });
-    }
-
-    public void deactivateAllPatterns() {
-        executorService.execute(() -> {
-            List<RotationPattern> patterns = shiftScheduleDao.getAllPatternsSync();
-            for (RotationPattern pattern : patterns) {
-                if (pattern.isActive()) {
-                    pattern.setActive(false);
-                    shiftScheduleDao.update(pattern);
-                }
-            }
-        });
-    }
-
-    // 排班相关操作
-    public LiveData<List<ShiftSchedule>> getAllShifts() {
-        return shiftScheduleDao.getAllShifts();
+    public ShiftRepository(Context context) {
+        AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
+        shiftScheduleDao = database.shiftScheduleDao();
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     public LiveData<List<ShiftSchedule>> getShiftsByDate(String date) {
@@ -98,7 +60,9 @@ public class ShiftRepository {
         });
     }
 
-    public void cleanup() {
-        executorService.shutdown();
+    public void deleteAllShifts() {
+        executorService.execute(() -> {
+            shiftScheduleDao.deleteAllShifts();
+        });
     }
 } 

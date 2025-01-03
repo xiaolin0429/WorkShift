@@ -10,14 +10,14 @@ public class AlarmSettings {
     private int reminderMinutes;
     private boolean notificationEnabled;
     private boolean soundEnabled;
-    private boolean vibrateEnabled;
+    private boolean vibrationEnabled;
 
-    public AlarmSettings(int reminderMinutes, boolean notificationEnabled, boolean soundEnabled, boolean vibrateEnabled) {
-        this.id = 1; // 只保存一条记录
-        this.reminderMinutes = reminderMinutes;
-        this.notificationEnabled = notificationEnabled;
-        this.soundEnabled = soundEnabled;
-        this.vibrateEnabled = vibrateEnabled;
+    public AlarmSettings() {
+        this.id = 1;
+        this.reminderMinutes = 30;
+        this.notificationEnabled = true;
+        this.soundEnabled = true;
+        this.vibrationEnabled = true;
     }
 
     public int getId() {
@@ -52,11 +52,11 @@ public class AlarmSettings {
         this.soundEnabled = soundEnabled;
     }
 
-    public boolean isVibrateEnabled() {
-        return vibrateEnabled;
+    public boolean isVibrationEnabled() {
+        return vibrationEnabled;
     }
 
-    public void setVibrateEnabled(boolean vibrateEnabled) {
-        this.vibrateEnabled = vibrateEnabled;
+    public void setVibrationEnabled(boolean vibrationEnabled) {
+        this.vibrationEnabled = vibrationEnabled;
     }
 } 

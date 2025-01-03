@@ -1,39 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="2dp">
+    android:orientation="vertical"
+    android:padding="4dp"
+    android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_weekday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="4dp"
-        android:background="@drawable/calendar_day_background"
-        android:foreground="?attr/selectableItemBackground">
+        android:textSize="12sp"
+        android:textColor="@color/calendar_text_weekday"
+        tools:text="一"/>
+
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="2dp">
 
         <TextView
-            android:id="@+id/text_solar_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/text_day"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:textSize="16sp"
-            android:textColor="@color/calendar_day_text"/>
+            android:textColor="@color/calendar_text_day"
+            tools:text="15"/>
 
-        <TextView
-            android:id="@+id/text_lunar_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/calendar_lunar_text"/>
+        <View
+            android:id="@+id/view_shift_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_calendar_day"/>
 
-        <LinearLayout
-            android:id="@+id/shift_indicators"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="2dp"
-            android:gravity="center"/>
+    </FrameLayout>
 
-    </LinearLayout>
-</FrameLayout> 
+    <TextView
+        android:id="@+id/text_lunar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textColor="@color/calendar_text_lunar"
+        tools:text="初一"/>
+
+    <TextView
+        android:id="@+id/text_shift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="@color/calendar_text_shift"
+        android:visibility="gone"
+        tools:text="早班"
+        tools:visibility="visible"/>
+
+</LinearLayout> 

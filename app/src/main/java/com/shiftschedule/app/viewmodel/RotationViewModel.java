@@ -4,15 +4,15 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.shiftschedule.app.model.RotationPattern;
-import com.shiftschedule.app.repository.ShiftRepository;
+import com.shiftschedule.app.repository.RotationRepository;
 import java.util.List;
 
 public class RotationViewModel extends AndroidViewModel {
-    private final ShiftRepository repository;
+    private final RotationRepository repository;
 
     public RotationViewModel(Application application) {
         super(application);
-        repository = new ShiftRepository(application);
+        repository = new RotationRepository(application);
     }
 
     public LiveData<List<RotationPattern>> getAllPatterns() {
@@ -21,6 +21,10 @@ public class RotationViewModel extends AndroidViewModel {
 
     public LiveData<RotationPattern> getPatternById(int id) {
         return repository.getPatternById(id);
+    }
+
+    public LiveData<RotationPattern> getActivePattern() {
+        return repository.getActivePattern();
     }
 
     public void insert(RotationPattern pattern) {
@@ -35,12 +39,13 @@ public class RotationViewModel extends AndroidViewModel {
         repository.delete(pattern);
     }
 
-    public void activatePattern(RotationPattern pattern) {
-        // 先停用所有模式
+    public void deactivateAllPatterns() {
         repository.deactivateAllPatterns();
-        
-        // 激活选中的模式
+    }
+
+    public void activatePattern(RotationPattern pattern) {
+        deactivateAllPatterns();
         pattern.setActive(true);
-        repository.update(pattern);
+        update(pattern);
     }
 } 

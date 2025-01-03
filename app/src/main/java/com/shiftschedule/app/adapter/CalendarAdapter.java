@@ -1,33 +1,47 @@
 package com.shiftschedule.app.adapter;
 
-import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.shiftschedule.app.R;
 import com.shiftschedule.app.model.CalendarDay;
 import com.shiftschedule.app.model.ShiftSchedule;
+import com.shiftschedule.app.util.ChineseLunarCalendar;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
-    private List<CalendarDay> days = new ArrayList<>();
+public class CalendarAdapter extends ListAdapter<CalendarDay, CalendarAdapter.CalendarViewHolder> {
     private OnDayClickListener listener;
-    private int currentYear;
-    private int currentMonth;
-    private int selectedPosition = -1;
 
-    public CalendarAdapter(Context context) {
-        // 初始化当前日期
-        Calendar calendar = Calendar.getInstance();
-        currentYear = calendar.get(Calendar.YEAR);
-        currentMonth = calendar.get(Calendar.MONTH);
+    public interface OnDayClickListener {
+        void onDayClick(CalendarDay day);
+    }
+
+    public CalendarAdapter() {
+        super(new DiffUtil.ItemCallback<CalendarDay>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull CalendarDay oldItem, @NonNull CalendarDay newItem) {
+                return oldItem.getDate().equals(newItem.getDate());
+            }
+
+            @Override
+            public boolean areContentsTheSame(@NonNull CalendarDay oldItem, @NonNull CalendarDay newItem) {
+                return oldItem.getDate().equals(newItem.getDate()) &&
+                       oldItem.getDayOfWeek().equals(newItem.getDayOfWeek()) &&
+                       oldItem.getShifts().equals(newItem.getShifts()) &&
+                       oldItem.isCurrentMonth() == newItem.isCurrentMonth() &&
+                       oldItem.isToday() == newItem.isToday();
+            }
+        });
+    }
+
+    public void setOnDayClickListener(OnDayClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,99 +54,85 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-        CalendarDay day = days.get(position);
-        
-        // 设置阳历日期
-        holder.textSolarDay.setText(String.valueOf(day.getDayOfMonth()));
-        
-        // 设置农历日期或节日
-        if (day.getLunarDay() != null && !day.getLunarDay().isEmpty()) {
-            holder.textLunarDay.setVisibility(View.VISIBLE);
-            holder.textLunarDay.setText(day.getLunarDay());
-        } else {
-            holder.textLunarDay.setVisibility(View.GONE);
-        }
-
-        // 设置班次指示器
-        holder.shiftIndicators.removeAllViews();
-        for (ShiftSchedule shift : day.getShifts()) {
-            View indicator = new View(holder.itemView.getContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    8, // width in dp
-                    8  // height in dp
-            );
-            params.setMargins(2, 0, 2, 0);
-            indicator.setLayoutParams(params);
-            
-            // 根据班次类型设置颜色
-            switch (shift.getShiftType()) {
-                case "早班":
-                    indicator.setBackgroundResource(R.color.shift_morning);
-                    break;
-                case "中班":
-                    indicator.setBackgroundResource(R.color.shift_afternoon);
-                    break;
-                case "晚班":
-                    indicator.setBackgroundResource(R.color.shift_night);
-                    break;
-            }
-            
-            holder.shiftIndicators.addView(indicator);
-        }
-
-        // 设置选中状态
-        holder.itemView.setSelected(position == selectedPosition);
-        
-        // 设置点击事件
-        holder.itemView.setOnClickListener(v -> {
-            int oldPosition = selectedPosition;
-            selectedPosition = position;
-            notifyItemChanged(oldPosition);
-            notifyItemChanged(selectedPosition);
-            
-            if (listener != null) {
-                listener.onDayClick(day);
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return days.size();
-    }
-
-    public void setDays(List<CalendarDay> days) {
-        this.days = days;
-        notifyDataSetChanged();
-    }
-
-    public List<CalendarDay> getDays() {
-        return days;
-    }
-
-    public void setCurrentMonth(int year, int month) {
-        this.currentYear = year;
-        this.currentMonth = month;
-    }
-
-    public void setOnDayClickListener(OnDayClickListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnDayClickListener {
-        void onDayClick(CalendarDay day);
+        CalendarDay day = getItem(position);
+        holder.bind(day, listener);
     }
 
     static class CalendarViewHolder extends RecyclerView.ViewHolder {
-        TextView textSolarDay;
-        TextView textLunarDay;
-        LinearLayout shiftIndicators;
+        private final TextView dayText;
+        private final TextView weekDayText;
+        private final TextView lunarText;
+        private final TextView shiftText;
+        private final View shiftIndicator;
 
-        CalendarViewHolder(View itemView) {
+        public CalendarViewHolder(@NonNull View itemView) {
             super(itemView);
-            textSolarDay = itemView.findViewById(R.id.text_solar_day);
-            textLunarDay = itemView.findViewById(R.id.text_lunar_day);
-            shiftIndicators = itemView.findViewById(R.id.shift_indicators);
+            dayText = itemView.findViewById(R.id.text_day);
+            weekDayText = itemView.findViewById(R.id.text_weekday);
+            lunarText = itemView.findViewById(R.id.text_lunar);
+            shiftText = itemView.findViewById(R.id.text_shift);
+            shiftIndicator = itemView.findViewById(R.id.view_shift_indicator);
+        }
+
+        public void bind(CalendarDay day, OnDayClickListener listener) {
+            // 设置日期
+            dayText.setText(String.valueOf(day.getDayOfMonth()));
+            weekDayText.setText(day.getDayOfWeek());
+            
+            // 设置农历
+            ChineseLunarCalendar lunar = new ChineseLunarCalendar(day.getDate());
+            lunarText.setText(lunar.getLunarDayString());
+            
+            // 设置文字颜色
+            int textColor = day.isCurrentMonth() ? 
+                    R.color.calendar_text_day : 
+                    R.color.calendar_text_day_other_month;
+            dayText.setTextColor(ContextCompat.getColor(itemView.getContext(), textColor));
+            weekDayText.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.calendar_text_weekday));
+            lunarText.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.calendar_text_lunar));
+
+            // 设置班次
+            if (!day.getShifts().isEmpty()) {
+                ShiftSchedule shift = day.getShifts().get(0);
+                shiftText.setText(shift.getShiftType());
+                shiftText.setVisibility(View.VISIBLE);
+                
+                // 设置班次背景色
+                int bgColor;
+                switch (shift.getShiftType()) {
+                    case "早班":
+                        bgColor = R.color.shift_morning;
+                        break;
+                    case "中班":
+                        bgColor = R.color.shift_afternoon;
+                        break;
+                    case "夜班":
+                        bgColor = R.color.shift_night;
+                        break;
+                    default:
+                        bgColor = R.color.shift_rest;
+                }
+                shiftIndicator.setBackgroundTintList(
+                    ColorStateList.valueOf(ContextCompat.getColor(itemView.getContext(), bgColor))
+                );
+            } else {
+                shiftText.setVisibility(View.GONE);
+                shiftIndicator.setBackgroundResource(R.drawable.bg_calendar_day);
+            }
+
+            // 设置今天的特殊样式
+            if (day.isToday()) {
+                itemView.setBackgroundResource(R.drawable.bg_calendar_today);
+            } else {
+                itemView.setBackground(null);
+            }
+
+            // 设置点击事件
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onDayClick(day);
+                }
+            });
         }
     }
 } 

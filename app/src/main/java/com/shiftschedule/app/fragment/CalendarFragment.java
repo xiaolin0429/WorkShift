@@ -18,6 +18,7 @@ import com.shiftschedule.app.util.LogUtil;
 import com.shiftschedule.app.viewmodel.ShiftViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -81,7 +82,11 @@ public class CalendarFragment extends Fragment {
     }
 
     private void observeShifts() {
-        shiftViewModel.getSelectedDateShifts().observe(getViewLifecycleOwner(), shifts -> {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        
+        shiftViewModel.getSelectedDateShifts(year, month).observe(getViewLifecycleOwner(), shifts -> {
             LogUtil.d(TAG, "Shifts updated, size: " + (shifts != null ? shifts.size() : 0));
             adapter.submitList(shifts);
             
