@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.shiftschedule.app.model.ShiftSchedule;
 import com.shiftschedule.app.viewmodel.ShiftViewModel;
+import com.shiftschedule.app.util.LogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class EditShiftActivity extends AppCompatActivity {
+    private static final String TAG = "EditShiftActivity";
     private ShiftViewModel shiftViewModel;
     private TextInputEditText editDate;
     private AutoCompleteTextView spinnerShiftType;
@@ -39,8 +41,10 @@ public class EditShiftActivity extends AppCompatActivity {
         // 设置Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.edit_shift);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(R.string.edit_shift);
+        }
 
         // 初始化视图
         initViews();
@@ -97,7 +101,9 @@ public class EditShiftActivity extends AppCompatActivity {
                 spinnerShiftType.setText(shift.getShiftType(), false);
                 updateTimeDisplay(editStartTime, shift.getStartTime());
                 updateTimeDisplay(editEndTime, shift.getEndTime());
-                editNote.setText(shift.getNote());
+                if (shift.getNote() != null) {
+                    editNote.setText(shift.getNote());
+                }
             }
         });
     }
@@ -118,8 +124,7 @@ public class EditShiftActivity extends AppCompatActivity {
         TimePickerDialog dialog = new TimePickerDialog(this,
                 (view, hourOfDay, minute) -> {
                     Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(isStartTime ? 
-                            calendar.getTimeInMillis() : calendar.getTimeInMillis());
+                    cal.setTimeInMillis(calendar.getTimeInMillis());
                     cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     cal.set(Calendar.MINUTE, minute);
                     
@@ -148,11 +153,17 @@ public class EditShiftActivity extends AppCompatActivity {
     }
 
     private void saveShift() {
-        String date = editDate.getText().toString();
-        String shiftType = spinnerShiftType.getText().toString();
-        String startTimeStr = editStartTime.getText().toString();
-        String endTimeStr = editEndTime.getText().toString();
-        String note = editNote.getText().toString();
+        CharSequence dateText = editDate.getText();
+        CharSequence shiftTypeText = spinnerShiftType.getText();
+        CharSequence startTimeText = editStartTime.getText();
+        CharSequence endTimeText = editEndTime.getText();
+        CharSequence noteText = editNote.getText();
+
+        String date = dateText != null ? dateText.toString() : "";
+        String shiftType = shiftTypeText != null ? shiftTypeText.toString() : "";
+        String startTimeStr = startTimeText != null ? startTimeText.toString() : "";
+        String endTimeStr = endTimeText != null ? endTimeText.toString() : "";
+        String note = noteText != null ? noteText.toString() : "";
 
         // 验证输入
         if (date.isEmpty() || shiftType.isEmpty() || 
@@ -198,7 +209,7 @@ public class EditShiftActivity extends AppCompatActivity {
             
             finish();
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.e(TAG, "Error saving shift", e);
             // 显示错误提示
         }
     }

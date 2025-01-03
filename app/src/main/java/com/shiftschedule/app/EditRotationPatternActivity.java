@@ -45,11 +45,15 @@ public class EditRotationPatternActivity extends AppCompatActivity {
         patternId = getIntent().getIntExtra("pattern_id", -1);
         if (patternId != -1) {
             // 编辑现有模式
-            getSupportActionBar().setTitle("编辑轮班模式");
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(R.string.edit_rotation_pattern);
+            }
             loadPattern(patternId);
         } else {
             // 新建模式
-            getSupportActionBar().setTitle("新建轮班模式");
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(R.string.new_rotation_pattern);
+            }
         }
     }
 
@@ -70,7 +74,7 @@ public class EditRotationPatternActivity extends AppCompatActivity {
         cycleDaysSlider.setStepSize(1);
 
         durationSlider.setValueFrom(30);
-        durationSlider.setValueTo(365);
+        durationSlider.setValueTo(360);
         durationSlider.setStepSize(30);
     }
 
@@ -105,9 +109,9 @@ public class EditRotationPatternActivity extends AppCompatActivity {
     }
 
     private void savePattern() {
-        String name = nameInput.getText().toString().trim();
+        String name = nameInput.getText() != null ? nameInput.getText().toString().trim() : "";
         if (name.isEmpty()) {
-            nameInput.setError("请输入轮班模式名称");
+            nameInput.setError(getString(R.string.input_pattern_name));
             return;
         }
 
@@ -125,7 +129,7 @@ public class EditRotationPatternActivity extends AppCompatActivity {
             viewModel.insert(pattern);
         }
 
-        Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
         finish();
     }
 

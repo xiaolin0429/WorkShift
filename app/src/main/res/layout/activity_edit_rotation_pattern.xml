@@ -32,7 +32,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="轮班模式名称"
+                android:hint="@string/rotation_pattern_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="轮班组数"
+                android:text="@string/rotation_group_count"
                 android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
             <com.google.android.material.slider.Slider
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="周期天数"
+                android:text="@string/rotation_cycle_days"
                 android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
             <com.google.android.material.slider.Slider
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="持续天数"
+                android:text="@string/rotation_duration_days"
                 android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
             <com.google.android.material.slider.Slider
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:valueFrom="30"
-                android:valueTo="365"
+                android:valueTo="360"
                 android:stepSize="30"/>
 
             <com.google.android.material.button.MaterialButton
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="保存"/>
+                android:text="@string/save"/>
 
         </LinearLayout>
 
